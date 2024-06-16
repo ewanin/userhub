@@ -1,5 +1,7 @@
+Desktop View
 ![image](https://github.com/ewanin/userhub/assets/70193546/dc9b57a6-b9f1-49e7-ade9-6c606c20b374)
 
+Mobile View
 ![image](https://github.com/ewanin/userhub/assets/70193546/9991c168-e52a-4ba5-b751-a7df2aeec9cd)
 
 
