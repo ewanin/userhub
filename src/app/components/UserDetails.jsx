@@ -2,18 +2,26 @@ import React, { useState, useEffect } from 'react';
 
 const UserDetails = ({ selectedUser }) => {
     const [imageLoadError, setImageLoadError] = useState(false);
+    const [imageLoading, setImageLoading] = useState(true);
 
-    // Reset imageLoadError when selectedUser changes
+    // Reset imageLoadError and imageLoading when selectedUser changes
     useEffect(() => {
         setImageLoadError(false);
+        setImageLoading(true); // Reset image loading state on user change
     }, [selectedUser]);
 
     // Handle image loading error
     const handleImageError = () => {
         setImageLoadError(true);
+        setImageLoading(false); // Image load attempt failed
     };
 
-    // Render avatar based on selectedUser and imageLoadError state
+    // Handle image loading success
+    const handleImageLoad = () => {
+        setImageLoading(false); // Image successfully loaded
+    };
+
+    // Render avatar based on selectedUser, imageLoadError, and imageLoading states
     const renderAvatar = () => {
         if (!selectedUser || !selectedUser.avatar || imageLoadError) {
             // Render initials or default avatar if avatar is not available or loading error occurs
@@ -29,8 +37,9 @@ const UserDetails = ({ selectedUser }) => {
             <img
                 src={selectedUser.avatar}
                 alt={selectedUser.profile?.username || 'User Avatar'}
+                onLoad={handleImageLoad}
                 onError={handleImageError}
-                className="w-20 h-20 rounded-full mb-2"
+                className={`w-20 h-20 rounded-full mb-2 ${imageLoading ? 'bg-gray-300 animate-pulse' : ''}`}
             />
         );
     };
@@ -47,14 +56,14 @@ const UserDetails = ({ selectedUser }) => {
                         {renderAvatar()}
                         <div>
                             {/* User information */}
-                            <div className='flex gap-2 lg:mb-1 md:font-normal font-bold'><div className='font-bold text-darkBlue italic md:block hidden'>Name:</div> {selectedUser.profile?.firstName} {selectedUser.profile?.lastName}</div>
-                            <div className='flex gap-2 lg:mb-1'><div className='font-bold text-darkBlue italic md:block hidden'>Username:</div> @{selectedUser.profile?.username}</div>
-                            <div className='flex gap-2 lg:mb-1'><div className='font-bold text-darkBlue italic md:block hidden'>Email:</div> {selectedUser.profile?.email}</div>
+                            <span className=' lg:mb-1 md:font-normal font-bold'><span className='font-bold text-darkBlue italic md:inline-block	 hidden'>Name:</span> {selectedUser.profile?.firstName} {selectedUser.profile?.lastName}</span>
+                            <div className=' lg:mb-1'><span className='font-bold text-darkBlue italic md:inline-block hidden'>Username:</span> @{selectedUser.profile?.username}</div>
+                            <div className=' lg:mb-1'><span className='font-bold text-darkBlue italic md:inline-block hidden'>Email:</span> {selectedUser.profile?.email}</div>
                         </div>
                     </div>
                     {/* Additional user details */}
-                    <div className='flex gap-2 lg:mb-1'><div className='font-bold text-darkBlue italic w-fit'>Job Title:</div> {selectedUser.jobTitle}</div>
-                    <div className='flex gap-2'><div className='font-bold text-darkBlue italic'>Bio:</div> {selectedUser.Bio}</div>
+                    <div className=' lg:mb-1'><span className='font-bold text-darkBlue italic w-fit'>Job Title:</span> {selectedUser.jobTitle}</div>
+                    <div className=''><span className='font-bold text-darkBlue italic'>Bio:</span> {selectedUser.Bio}</div>
                 </div>
             ) : (
                 // Display message if no user is selected
